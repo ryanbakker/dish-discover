@@ -20,11 +20,13 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body>
+        <body className="flex flex-col min-h-screen">
           <Topbar />
-          <main className="flex flex-row">
+          <main className="flex flex-row flex-1 h-full">
             <LeftSidebar />
-            <section className="p-10">{children}</section>
+            <section className=" flex-1 p-8 w-full h-full flex flex-col">
+              {children}
+            </section>
           </main>
           <Bottombar />
         </body>

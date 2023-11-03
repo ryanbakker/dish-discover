@@ -4,12 +4,13 @@ import { OrganizationSwitcher, SignOutButton, SignedIn } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { dark } from "@clerk/themes";
 
 function Topbar() {
   const pathname = usePathname();
 
   return (
-    <header className="bg-dark-1 pl-5 pr-4 py-4">
+    <header className="bg-dark-1 pl-5 pr-4 py-2">
       <nav className="flex items-center">
         <Link href="/" className="flex items-center gap-2">
           <Image
@@ -40,7 +41,7 @@ function Topbar() {
                   width={22}
                   className="invert"
                 />
-                <p className="text-white font-medium">Create Recipe</p>
+                <p className="text-white font-medium">Create</p>
               </Link>
             </li>
             <li>
@@ -64,6 +65,7 @@ function Topbar() {
             <li>
               <OrganizationSwitcher
                 appearance={{
+                  baseTheme: dark,
                   elements: {
                     organizationSwitcherTrigger: "py-2 px-2 text-white",
                   },

@@ -20,7 +20,7 @@ import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import Image from "next/image";
 import { ChangeEvent, useState } from "react";
-import { toast } from "../ui/use-toast";
+import { toast, useToast } from "../ui/use-toast";
 
 interface Props {
   userId: string;
@@ -31,6 +31,7 @@ function PostRecipe({ userId, image }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const { organization } = useOrganization();
+  const { toast } = useToast();
   const [files, setFiles] = useState<File[]>([]);
   const [imagePreview, setImagePreview] = useState<string | null>(
     image || null
@@ -106,123 +107,157 @@ function PostRecipe({ userId, image }: Props) {
   return (
     <>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          <FormField
-            control={form.control}
-            name="title"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Title:</FormLabel>
-                <FormControl>
-                  <Input
-                    {...field}
-                    type="text"
-                    placeholder="Succulent Roast Chicken & Potatoes"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="w-full flex flex-col"
+        >
+          <div className="flex">
+            <div className="flex flex-1 flex-col gap-5 justify-center mb-8">
+              <FormField
+                control={form.control}
+                name="title"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="form-label">Title</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="text"
+                        autoComplete="off"
+                        placeholder="Succulent Roast Chicken & Potatoes"
+                        className="font-light focus-visible:ring-0 focus-visible:border-accent-1 bg-gray-100 placeholder:text-gray-600 border-transparent"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-          <FormField
-            control={form.control}
-            name="image"
-            render={({ field }) => (
-              <FormItem className="flex items-center gap-4">
-                <FormLabel className="account-form_image-label">
-                  {imagePreview ? (
-                    <Image
-                      src={imagePreview}
-                      alt="profile photo"
-                      width={96}
-                      height={96}
-                      priority
-                      className="rounded-full object-contain"
+              <FormField
+                control={form.control}
+                name="ingredients"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="form-label">Ingredients</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        {...field}
+                        value={field.value || ""}
+                        autoComplete="off"
+                        onChange={(e) => field.onChange(e)}
+                        placeholder="1 Cup Flour , 1/2 Cup Butter"
+                        className="form-textarea min-h-[8rem]"
+                      />
+                    </FormControl>
+                    <FormMessage className="text-gray-400 font-light">
+                      seperated by comma " , "
+                    </FormMessage>
+                  </FormItem>
+                )}
+              />
+            </div>
+            <FormField
+              control={form.control}
+              name="image"
+              render={({ field }) => (
+                <FormItem className="items-center gap-4 py-8 pl-8 flex flex-col ml-auto">
+                  <FormLabel className="overflow-hidden h-14rem w-14rem aspect-square flex justify-center items-center rounded-xl">
+                    {imagePreview ? (
+                      <Image
+                        src={imagePreview}
+                        alt="profile photo"
+                        width={280}
+                        height={280}
+                        priority
+                      />
+                    ) : (
+                      <div className="bg-gray-100 p-20 flex flex-col items-center justify-center rounded-xl">
+                        <Image
+                          src="/assets/icons/PhotoUpload.svg"
+                          alt="profile photo"
+                          width={95}
+                          height={95}
+                          className="opacity-50"
+                        />
+                        <p className="pt-4 opacity-50">Click to Select Image</p>
+                      </div>
+                    )}
+                  </FormLabel>
+                  <span
+                    className={`font-light text-gray-500 !mt-0 ${
+                      imagePreview && "text-gray-200"
+                    }`}
+                  >
+                    {imagePreview ? "Click image to replace" : ""}
+                  </span>
+                  <FormControl className="flex-1 text-base-semibold text-gray-200">
+                    <Input
+                      type="file"
+                      accept="image/*"
+                      className="max-w-[14rem] hidden"
+                      onChange={(e) => handleImage(e, field.onChange)}
                     />
-                  ) : (
-                    <Image
-                      src="/assets/icons/PhotoUpload.svg"
-                      alt="profile photo"
-                      width={24}
-                      height={24}
-                      className="object-contain"
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <div className="flex flex-col gap-6">
+            <FormField
+              control={form.control}
+              name="method"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="form-label">Method:</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      {...field}
+                      value={field.value || ""}
+                      autoComplete="off"
+                      onChange={(e) => field.onChange(e)}
+                      placeholder="1) Heat oil in pan on high heat..."
+                      className="form-textarea min-h-[12rem]"
                     />
-                  )}
-                </FormLabel>
-                <FormControl className="flex-1 text-base-semibold text-gray-200">
-                  <Input
-                    type="file"
-                    accept="image/*"
-                    placeholder="Upload a pic"
-                    className="account-form_image-input"
-                    onChange={(e) => handleImage(e, field.onChange)}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="notes"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="form-label">Notes:</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      {...field}
+                      value={field.value || ""}
+                      autoComplete="off"
+                      onChange={(e) => field.onChange(e)}
+                      placeholder="When mashing banana remember to..."
+                      className="form-textarea resize-none"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
 
-          <FormField
-            control={form.control}
-            name="ingredients"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Ingredients (seperated by comma " , "):</FormLabel>
-                <FormControl>
-                  <Input
-                    {...field}
-                    type="text"
-                    placeholder="1 Cup Flour , 1/2 Cup Butter"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="method"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Method:</FormLabel>
-                <FormControl>
-                  <Textarea
-                    {...field}
-                    value={field.value || ""}
-                    onChange={(e) => field.onChange(e)}
-                    placeholder="1) Heat oil in pan on high heat..."
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="notes"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Notes:</FormLabel>
-                <FormControl>
-                  <Textarea
-                    {...field}
-                    value={field.value || ""}
-                    onChange={(e) => field.onChange(e)}
-                    placeholder="When mashing banana remember to..."
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <div>
-            <Button type="button" onClick={() => router.push("/")}>
+          <div className="mt-10 flex gap-4">
+            <Button
+              type="button"
+              onClick={() => router.push("/")}
+              className="bg-slate-400"
+            >
               Cancel
             </Button>
-            <Button type="submit">Post Recipe</Button>
+            <Button type="submit" className="bg-accent-1">
+              Post Recipe
+            </Button>
           </div>
         </form>
       </Form>

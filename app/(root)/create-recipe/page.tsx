@@ -13,9 +13,11 @@ async function page() {
 
   return (
     <>
-      <h1>Create Recipe</h1>
+      <h1 className="page-heading">Create Recipe</h1>
 
-      <PostRecipe userId={userInfo._id} />
+      <div className="flex flex-1 w-full max-w-3xl pb-20">
+        <PostRecipe userId={userInfo._id} image={""} />
+      </div>
     </>
   );
 }
