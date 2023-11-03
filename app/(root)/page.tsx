@@ -1,3 +1,9 @@
 export default function Home() {
-  return <main></main>;
+  return (
+    <>
+      <h1 className="text-2xl">DishDiscover - Home</h1>
+
+      {/* Posts */}
+    </>
+  );
 }
