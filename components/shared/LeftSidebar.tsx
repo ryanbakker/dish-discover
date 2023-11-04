@@ -10,7 +10,7 @@ function LeftSidebar() {
 
   return (
     <div className="hidden md:flex bg-dark-1 min-h-[90vh] max-w-[15rem]">
-      <nav className="flex flex-1 flex-col gap-12 pb-20 px-4 justify-center mt-0">
+      <nav className="flex flex-1 flex-col gap-12 pt-20 px-4">
         {sidebarLinks.map((link) => {
           const isActive =
             (pathname.includes(link.route) && link.route.length > 1) ||

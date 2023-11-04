@@ -8,9 +8,14 @@ import { connectToDB } from "../mongoose";
 import fs from "fs/promises";
 
 export async function fetchRecipes() {
-  connectToDB();
+  try {
+    connectToDB();
 
-  // Create a query to fetch recipes
+    const recipes = await Recipe.find().populate("author community");
+    return { recipes };
+  } catch (error: any) {
+    throw new Error(`Failed to fetch recipes: ${error.message}`);
+  }
 }
 
 interface Params {
@@ -26,21 +31,20 @@ interface Params {
 
 export async function createRecipe({
   title,
-  author,
   image,
   ingredients,
   method,
   notes,
+  author,
   communityId,
   path,
 }: Params) {
   try {
     connectToDB();
 
-    const communityIdObject = await Community.findOne(
-      { id: communityId },
-      { _id: 1 }
-    );
+    const communityIdObject = communityId
+      ? await Community.findOne({ id: communityId }, { _id: 1 })
+      : null;
 
     const createdRecipe = await Recipe.create({
       title,
@@ -49,8 +53,10 @@ export async function createRecipe({
       ingredients,
       method,
       notes,
-      community: communityIdObject, // Assign Id if provided, or leave blank
+      community: communityIdObject, // Assign Id if provided, or leave null
     });
+
+    console.log("Created Recipe:", createdRecipe); // Log the created recipe
 
     // Update user model
     await User.findByIdAndUpdate(author, {
@@ -91,5 +97,29 @@ export async function deleteRecipe(id: string, path: string): Promise<void> {
     await mainRecipe.remove();
   } catch (error: any) {
     throw new Error(`Failed to delete recipe: ${error.message}`);
+  }
+}
+
+export async function fetchRecipeById(recipeId: string) {
+  connectToDB();
+
+  try {
+    const recipe = await Recipe.findById(recipeId)
+      .populate({
+        path: "author",
+        model: User,
+        select: "_id id name image",
+      })
+      .populate({
+        path: "community",
+        model: Community,
+        select: "_id id name image",
+      })
+      .exec();
+
+    return recipe;
+  } catch (err) {
+    console.error("Error while fetching recipe: ", err);
+    throw new Error("Unable to fetch recipe");
   }
 }

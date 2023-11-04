@@ -83,15 +83,6 @@ export async function fetchCommunityPosts(id: string) {
           model: User,
           select: "name image id",
         },
-        {
-          path: "children",
-          model: Recipe,
-          populate: {
-            path: "author",
-            model: User,
-            select: "image _id",
-          },
-        },
       ],
     });
 

@@ -125,7 +125,7 @@ function PostRecipe({ userId, image }: Props) {
                         type="text"
                         autoComplete="off"
                         placeholder="Succulent Roast Chicken & Potatoes"
-                        className="font-light focus-visible:ring-0 focus-visible:border-accent-1 bg-gray-100 placeholder:text-gray-600 border-transparent"
+                        className="font-light focus-visible:ring-0 focus-visible:border-accent-1 bg-gray-100 placeholder:text-gray-500 border-transparent"
                       />
                     </FormControl>
                     <FormMessage />
