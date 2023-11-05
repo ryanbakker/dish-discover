@@ -6,10 +6,10 @@ const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   image: String,
   bio: String,
-  threads: [
+  recipes: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Thread",
+      ref: "Recipe",
     },
   ],
   onboarded: {
@@ -23,6 +23,9 @@ const userSchema = new mongoose.Schema({
     },
   ],
 });
+
+// Explicitly tell Mongoose to use the 'id' field as the primary key
+userSchema.set("toJSON", { virtuals: true });
 
 const User = mongoose.models.User || mongoose.model("User", userSchema);
 

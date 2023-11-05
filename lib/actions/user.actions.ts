@@ -4,7 +4,7 @@ import { FilterQuery, SortOrder } from "mongoose";
 import { revalidatePath } from "next/cache";
 
 import Community from "../models/community.model";
-import Recipe from "../models/recipe.model";
+import Recipe, { RecipeType } from "../models/recipe.model";
 import User from "../models/user.model";
 
 import { connectToDB } from "../mongoose";
@@ -62,9 +62,9 @@ export async function updateUser({
   }
 }
 
-export async function fetchUserRecipes(userId: string) {
+export async function fetchUserRecipes(userId: string): Promise<RecipeType[]> {
   try {
-    connectToDB();
+    // Connect to the database
 
     // Find all recipes authored by the user with the given userId
     const recipes = await User.findOne({ id: userId }).populate({
@@ -80,7 +80,8 @@ export async function fetchUserRecipes(userId: string) {
       ],
     });
 
-    return recipes;
+    // Return an array of recipes
+    return recipes?.recipes || [];
   } catch (error) {
     console.error("Error fetching user recipes:", error);
     throw error;

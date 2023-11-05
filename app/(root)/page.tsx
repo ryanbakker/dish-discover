@@ -7,10 +7,15 @@ export default async function Home() {
   const result = await fetchRecipes();
   const user = await currentUser();
 
+  // Sort recipes by createdAt in descending order
+  result.recipes.sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  );
+
   return (
-    <section className="flex flex-col justify-start">
+    <section className="flex flex-col justify-start pb-10">
       <div className="flex items-center justify-center w-full py-8">
-        <h1 className="text-2xl md:text-3xl font-lora">Recipes</h1>
+        <h1 className="sm:text-2xl text-3xl font-lora">Recipes</h1>
       </div>
 
       <div className="mt-2 flex flex-wrap gap-10 justify-center max-w-[65rem]">
@@ -19,9 +24,8 @@ export default async function Home() {
         ) : (
           <>
             {result.recipes.map((recipe) => (
-              <Link href={`/recipe/${recipe._id}`}>
+              <Link href={`/recipe/${recipe.id}`} key={recipe._id}>
                 <RecipeCard
-                  key={recipe._id}
                   id={recipe._id}
                   currentUserId={user?.id || ""}
                   title={recipe.title}

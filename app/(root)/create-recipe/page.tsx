@@ -15,7 +15,7 @@ async function page() {
     <>
       <h1 className="page-heading">Create Recipe</h1>
 
-      <div className="flex flex-1 w-full max-w-3xl pb-20">
+      <div className="flex flex-1 w-full max-w-3xl pb-20 px-6 sm:px-14 md:px-8 lg:px-16">
         <PostRecipe userId={userInfo._id} image={""} />
       </div>
     </>

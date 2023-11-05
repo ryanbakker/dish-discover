@@ -21,6 +21,7 @@ import { Textarea } from "../ui/textarea";
 import Image from "next/image";
 import { ChangeEvent, useState } from "react";
 import { toast, useToast } from "../ui/use-toast";
+import Loader from "../shared/Loader";
 
 interface Props {
   userId: string;
@@ -33,6 +34,7 @@ function PostRecipe({ userId, image }: Props) {
   const { organization } = useOrganization();
   const { toast } = useToast();
   const [files, setFiles] = useState<File[]>([]);
+  const [isPosting, setIsPosting] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(
     image || null
   );
@@ -78,6 +80,8 @@ function PostRecipe({ userId, image }: Props) {
 
   const onSubmit = async (values: z.infer<typeof RecipeValidation>) => {
     try {
+      setIsPosting(true);
+
       await createRecipe({
         title: values.title,
         image: values.image,
@@ -91,10 +95,17 @@ function PostRecipe({ userId, image }: Props) {
 
       toast({
         title: "Success! Your recipe was created",
+        duration: 5000,
+        className: "bg-green-500 text-white",
       });
 
+      console.log("Recipe was created Successfully!");
+
+      form.reset();
+      setIsPosting(false);
       router.push("/");
     } catch (error: any) {
+      setIsPosting(false);
       toast({
         title: "Error! Your recipe was unsuccessfully posted",
         variant: "destructive",
@@ -111,7 +122,7 @@ function PostRecipe({ userId, image }: Props) {
           onSubmit={form.handleSubmit(onSubmit)}
           className="w-full flex flex-col"
         >
-          <div className="flex">
+          <div className="flex flex-col md:flex-row">
             <div className="flex flex-1 flex-col gap-5 justify-center mb-8">
               <FormField
                 control={form.control}
@@ -160,7 +171,7 @@ function PostRecipe({ userId, image }: Props) {
               control={form.control}
               name="image"
               render={({ field }) => (
-                <FormItem className="items-center gap-4 py-8 pl-8 flex flex-col ml-auto">
+                <FormItem className="items-center gap-4 py-8 pl-8 flex flex-col ml-auto w-full md:w-auto">
                   <FormLabel className="overflow-hidden h-14rem w-14rem aspect-square flex justify-center items-center rounded-xl">
                     {imagePreview ? (
                       <Image
@@ -180,6 +191,9 @@ function PostRecipe({ userId, image }: Props) {
                           className="opacity-50"
                         />
                         <p className="pt-4 opacity-50">Click to Select Image</p>
+                        <p className="text-xs font-light text-slate-500 mt-2">
+                          ( Landscape recommended )
+                        </p>
                       </div>
                     )}
                   </FormLabel>
@@ -251,12 +265,12 @@ function PostRecipe({ userId, image }: Props) {
             <Button
               type="button"
               onClick={() => router.push("/")}
-              className="bg-slate-400"
+              className="bg-slate-400 text-white"
             >
               Cancel
             </Button>
-            <Button type="submit" className="bg-accent-1">
-              Post Recipe
+            <Button type="submit" className="bg-accent-1 text-white">
+              {isPosting ? <Loader /> : "Post Recipe"}
             </Button>
           </div>
         </form>

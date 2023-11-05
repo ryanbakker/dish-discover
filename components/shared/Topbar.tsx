@@ -20,7 +20,7 @@ function Topbar() {
             width={26}
             className="invert"
           />
-          <p className="text-2xl text-white font-medium tracking-tight">
+          <p className="text-2xl text-white font-medium tracking-tight font-lora">
             DishDiscover
           </p>
         </Link>

@@ -4,7 +4,7 @@ export const RecipeValidation = z.object({
   title: z
     .string()
     .min(5, { message: "Title must be at least 5 characters" })
-    .max(50, { message: "Title has a max of 50 characters" }),
+    .max(45, { message: "Title has a max of  characters" }),
   image: z.string().url().nonempty(),
   ingredients: z
     .string()

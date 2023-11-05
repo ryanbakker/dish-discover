@@ -2,7 +2,7 @@ import { multiFormatDateString } from "@/lib/utils";
 import Image from "next/image";
 
 interface Props {
-  id: string;
+  id: string | "";
   currentUserId: string;
   title: string;
   ingredients: string;
@@ -12,13 +12,13 @@ interface Props {
   createdAt: string;
   author: {
     name: string;
-    image: string;
+    image: string | "";
     id: string;
   };
   community: {
     id: string;
     name: string;
-    image: string;
+    image: string | "";
   } | null;
 }
 

@@ -6,6 +6,7 @@ import Recipe from "../models/recipe.model";
 import User from "../models/user.model";
 import { connectToDB } from "../mongoose";
 import fs from "fs/promises";
+import mongoose from "mongoose";
 
 export async function fetchRecipes() {
   try {
@@ -55,8 +56,6 @@ export async function createRecipe({
       notes,
       community: communityIdObject, // Assign Id if provided, or leave null
     });
-
-    console.log("Created Recipe:", createdRecipe); // Log the created recipe
 
     // Update user model
     await User.findByIdAndUpdate(author, {
@@ -108,11 +107,6 @@ export async function fetchRecipeById(recipeId: string) {
       .populate({
         path: "author",
         model: User,
-        select: "_id id name image",
-      })
-      .populate({
-        path: "community",
-        model: Community,
         select: "_id id name image",
       })
       .exec();

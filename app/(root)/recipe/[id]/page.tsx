@@ -16,7 +16,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
   const recipe = await fetchRecipeById(params.id);
 
   return (
-    <section>
+    <section className="w-full">
       <div>
         <RecipeSingle
           id={recipe._id}

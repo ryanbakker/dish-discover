@@ -1,6 +1,17 @@
-import mongoose from "mongoose";
+import mongoose, { Document, Schema } from "mongoose";
 
-const recipeSchema = new mongoose.Schema({
+interface RecipeType extends Document {
+  title: string;
+  image: string;
+  ingredients: string;
+  method: string;
+  notes: string;
+  community?: Schema.Types.ObjectId | null;
+  createdAt: Date;
+  author: Schema.Types.ObjectId;
+}
+
+const recipeSchema = new mongoose.Schema<RecipeType>({
   title: { type: String, required: true },
   image: { type: String, required: true },
   ingredients: { type: String, required: true },
@@ -11,6 +22,8 @@ const recipeSchema = new mongoose.Schema({
   author: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
 });
 
-const Recipe = mongoose.models.Recipe || mongoose.model("Recipe", recipeSchema);
+const Recipe =
+  mongoose.models.Recipe || mongoose.model<RecipeType>("Recipe", recipeSchema);
 
+export type { RecipeType }; // Use 'export type' for TypeScript strictness
 export default Recipe;

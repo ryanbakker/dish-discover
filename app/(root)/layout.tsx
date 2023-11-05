@@ -39,7 +39,7 @@ export default function RootLayout({
           <main className="flex flex-row flex-1 h-full">
             <LeftSidebar />
             <section className=" flex-1 w-full h-full flex flex-col items-center mx-auto">
-              <div className="w-full lg:min-w-[800px] flex flex-col">
+              <div className="w-full lg:min-w-[800px] flex flex-col items-center">
                 {children}
               </div>
             </section>
