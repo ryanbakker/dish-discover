@@ -38,6 +38,11 @@ export const bottombarLinks = [
     label: "Explore",
   },
   {
+    imgURL: "/assets/icons/TextPlus.svg",
+    route: "/create-recipe",
+    label: "Create",
+  },
+  {
     imgURL: "/assets/icons/Bookmark.svg",
     route: "/saved",
     label: "Saved",

@@ -5,6 +5,7 @@ import Topbar from "@/components/shared/Topbar";
 import LeftSidebar from "@/components/shared/LeftSidebar";
 import Bottombar from "@/components/shared/Bottombar";
 import { Lora, Inter } from "next/font/google";
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: "DishDiscover - Share Recipes",
@@ -37,12 +38,13 @@ export default function RootLayout({
           <Topbar />
           <main className="flex flex-row flex-1 h-full">
             <LeftSidebar />
-            <section className=" flex-1 p-8 w-full h-full flex flex-col items-center mx-auto">
-              <div className="min-w-[300px] md:min-w-[600px] lg:min-w-[800px] flex flex-col">
+            <section className=" flex-1 w-full h-full flex flex-col items-center mx-auto">
+              <div className="w-full lg:min-w-[800px] flex flex-col">
                 {children}
               </div>
             </section>
           </main>
+          <Toaster />
           <Bottombar />
         </body>
       </html>

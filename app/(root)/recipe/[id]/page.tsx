@@ -1,3 +1,4 @@
+import RecipeSingle from "@/components/shared/RecipeSingle";
 import { fetchRecipeById } from "@/lib/actions/recipe.actions";
 import { fetchUser } from "@/lib/actions/user.actions";
 import { currentUser } from "@clerk/nextjs";
@@ -16,7 +17,20 @@ const Page = async ({ params }: { params: { id: string } }) => {
 
   return (
     <section>
-      <h1>Single Recipe</h1>
+      <div>
+        <RecipeSingle
+          id={recipe._id}
+          currentUserId={user?.id || ""}
+          title={recipe.title}
+          image={recipe.image}
+          ingredients={recipe.ingredients}
+          method={recipe.method}
+          notes={recipe.notes}
+          author={recipe.author}
+          community={recipe.community}
+          createdAt={recipe.createdAt}
+        />
+      </div>
     </section>
   );
 };

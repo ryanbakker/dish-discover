@@ -86,3 +86,11 @@
 .form-textarea {
   @apply font-light focus-visible:border-accent-1 bg-gray-100 placeholder:text-gray-500 border-transparent resize-none focus-visible:!ring-0 p-4;
 }
+
+form button.cl-formButtonPrimary {
+  @apply bg-accent-1 hover:bg-slate-800;
+}
+
+div.cl-footerAction a.cl-footerActionLink {
+  @apply text-accent-1;
+}

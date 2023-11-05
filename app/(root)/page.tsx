@@ -9,8 +9,11 @@ export default async function Home() {
 
   return (
     <section className="flex flex-col justify-start">
-      <h1 className="text-2xl">Home</h1>
-      <div className="mt-6 flex flex-wrap gap-10 justify-center max-w-[65rem]">
+      <div className="flex items-center justify-center w-full py-8">
+        <h1 className="text-2xl md:text-3xl font-lora">Recipes</h1>
+      </div>
+
+      <div className="mt-2 flex flex-wrap gap-10 justify-center max-w-[65rem]">
         {result.recipes.length === 0 ? (
           <p>No recipes found</p>
         ) : (

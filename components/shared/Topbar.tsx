@@ -27,7 +27,7 @@ function Topbar() {
 
         <div className="ml-auto">
           <ul className="flex items-center flex-row gap-8">
-            <li>
+            <li className="hidden md:block">
               <Link
                 href="/create-recipe"
                 className={`flex flex-row gap-2 py-2 px-4 rounded-lg ${
@@ -44,7 +44,7 @@ function Topbar() {
                 <p className="text-white font-medium">Create</p>
               </Link>
             </li>
-            <li>
+            <li className="hidden xs:block">
               <SignedIn>
                 <SignOutButton>
                   <div className="flex flex-row gap-2">
