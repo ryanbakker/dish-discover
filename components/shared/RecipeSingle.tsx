@@ -38,6 +38,7 @@ const RecipeSingle = ({
   community,
   author,
 }: Props) => {
+  console.log(author);
   return (
     <article className="pb-12">
       <div className="apsect=4/3 overflow-hidden w-full h-[25rem] flex items-center shadow-xl">
@@ -58,7 +59,10 @@ const RecipeSingle = ({
         </h2>
 
         <div className="mt-7 pb-4 flex flex-row">
-          <Link href={`/profile/${id}`} className="flex gap-2 items-center">
+          <Link
+            href={`/profile/${author.id}`}
+            className="flex gap-2 items-center"
+          >
             <Image
               src={author.image}
               alt={author.name}

@@ -20,7 +20,7 @@ function ProfileHeader({ accountId, name, username, imgUrl, bio }: Props) {
   return (
     <div className="shadow-lg w-full p-10 flex gap-4">
       <div>
-        <div className="p-1 border border-accent-1 rounded-full m-auto bg-white z-50 relative">
+        <div className="p-1 border-[1.5px] border-accent-1 rounded-full m-auto bg-white z-50 relative">
           <Image
             src={imgUrl}
             alt="user"
@@ -30,7 +30,7 @@ function ProfileHeader({ accountId, name, username, imgUrl, bio }: Props) {
           />
         </div>
 
-        <div className="bg-accent-1 h-full w-0.5 ml-[2.52rem] -mt-[4.53rem] rounded-full" />
+        <div className="bg-accent-1 h-full w-[1.5px] ml-[2.52rem] -mt-[4.53rem] rounded-full" />
       </div>
 
       <div className="w-full relative">

@@ -20,9 +20,11 @@ async function page({ params }: { params: { id: string } }) {
         bio={userInfo.bio}
       />
 
-      <div className="p-8 flex flex-wrap gap-10 justify-center max-w-[65rem]">
+      <div className="p-8 flex flex-wrap gap-10 justify-center max-w-[65rem] mx-auto">
         {userRecipes.length === 0 ? (
-          <p>This user has no posted recipes</p>
+          <p className="w-full flex items-center justify-center">
+            Could not find any recipes
+          </p>
         ) : (
           userRecipes.map((recipe) => (
             <Link href={`/recipe/${recipe._id}`} key={recipe.id}>
@@ -35,7 +37,6 @@ async function page({ params }: { params: { id: string } }) {
             </Link>
           ))
         )}
-        <div className="invert">{userRecipes.length === 0 && <Loader />}</div>
       </div>
     </section>
   );
