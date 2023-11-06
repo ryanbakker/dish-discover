@@ -7,8 +7,11 @@ import Link from "next/link";
 
 async function page({ params }: { params: { id: string } }) {
   const user = await currentUser();
-  const userInfo = await fetchUser(user!.id);
-  const userRecipes = await fetchUserRecipes(user!.id);
+  const userId = params.id;
+  const userInfo = await fetchUser(userId);
+  const userRecipes = await fetchUserRecipes(userId);
+
+  console.log(userRecipes);
 
   return (
     <section className="w-full">
@@ -21,22 +24,16 @@ async function page({ params }: { params: { id: string } }) {
       />
 
       <div className="p-8 flex flex-wrap gap-10 justify-center max-w-[65rem] mx-auto">
-        {userRecipes.length === 0 ? (
-          <p className="w-full flex items-center justify-center">
-            Could not find any recipes
-          </p>
-        ) : (
-          userRecipes.map((recipe) => (
-            <Link href={`/recipe/${recipe._id}`} key={recipe.id}>
-              <ProfileRecipeCard
-                id={recipe._id}
-                title={recipe.title}
-                image={recipe.image}
-                createdAt={recipe.createdAt.toISOString()}
-              />
-            </Link>
-          ))
-        )}
+        {userRecipes.map((recipe) => (
+          <Link href={`/recipe/${recipe._id}`} key={recipe.id}>
+            <ProfileRecipeCard
+              id={recipe._id}
+              title={recipe.title}
+              image={recipe.image}
+              createdAt={recipe.createdAt.toISOString()}
+            />
+          </Link>
+        ))}
       </div>
     </section>
   );

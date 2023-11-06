@@ -7,6 +7,8 @@ import User from "../models/user.model";
 import { connectToDB } from "../mongoose";
 import fs from "fs/promises";
 import mongoose from "mongoose";
+import { currentUser } from "@clerk/nextjs";
+import { toast } from "@/components/ui/use-toast";
 
 export async function fetchRecipes() {
   try {
@@ -75,25 +77,15 @@ export async function createRecipe({
   }
 }
 
-export async function deleteRecipe(id: string, path: string): Promise<void> {
+export async function deleteRecipe(recipeId: string) {
+  connectToDB();
+
   try {
-    // Connect to the database (you may not need this if you're using a global connection)
-    connectToDB();
+    const recipe = Recipe.findById(recipeId);
 
-    // Find the recipe to be deleted
-    const mainRecipe = await Recipe.findById(id).populate("author community");
+    await Recipe.deleteOne(recipe);
 
-    if (!mainRecipe) {
-      throw new Error("Recipe not found");
-    }
-
-    // Delete the associated image file if a path is provided
-    if (path) {
-      await fs.unlink(path);
-    }
-
-    // Remove the recipe from MongoDB
-    await mainRecipe.remove();
+    return;
   } catch (error: any) {
     throw new Error(`Failed to delete recipe: ${error.message}`);
   }

@@ -6,7 +6,6 @@ import { revalidatePath } from "next/cache";
 import Community from "../models/community.model";
 import Recipe, { RecipeType } from "../models/recipe.model";
 import User from "../models/user.model";
-
 import { connectToDB } from "../mongoose";
 
 export async function fetchUser(userId: string) {
@@ -64,24 +63,15 @@ export async function updateUser({
 
 export async function fetchUserRecipes(userId: string): Promise<RecipeType[]> {
   try {
-    // Connect to the database
+    const recipes = await Recipe.find({ author: userId })
+      .populate({
+        path: "community",
+        model: "Community",
+        select: "name id image _id",
+      })
+      .lean(); // Use the lean() method to convert results to plain JavaScript objects
 
-    // Find all recipes authored by the user with the given userId
-    const recipes = await User.findOne({ id: userId }).populate({
-      path: "recipes",
-      model: Recipe,
-      populate: [
-        {
-          path: "community",
-          model: Community,
-          select: "name id image _id", // Select the "name" and "_id" fields from the "Community" model
-        },
-        // Remove the "children" part from the populate options
-      ],
-    });
-
-    // Return an array of recipes
-    return recipes?.recipes || [];
+    return recipes as RecipeType[];
   } catch (error) {
     console.error("Error fetching user recipes:", error);
     throw error;
