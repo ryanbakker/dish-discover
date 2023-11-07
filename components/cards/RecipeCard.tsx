@@ -14,6 +14,7 @@ interface Props {
     name: string;
     image: string | "";
     id: string;
+    username: string;
   };
   community: {
     id: string;
@@ -46,7 +47,7 @@ const RecipeCard = ({
         />
       </div>
 
-      <div className="p-5 bg-gray-50 mt-auto flex-1 flex flex-col justify-between">
+      <div className="p-5 bg-accent-light mt-auto flex-1 flex flex-col justify-between">
         <h3 className="text-xl text-slate-800 font-lora">{title}</h3>
 
         <div className="flex gap-2 mt-4 items-center">
@@ -60,8 +61,9 @@ const RecipeCard = ({
 
           <div className="flex flex-col gap-0">
             <h3 className="m-0 p-0 text-slate-600">{author.name}</h3>
-            <p className="text-xs text-slate-400">
-              Published – {multiFormatDateString(createdAt)}
+            <p className="text-xs text-slate-500">
+              @{author.username} &nbsp;•&nbsp;{" "}
+              {multiFormatDateString(createdAt)}
             </p>
           </div>
         </div>

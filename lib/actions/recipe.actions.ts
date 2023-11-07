@@ -5,16 +5,12 @@ import Community from "../models/community.model";
 import Recipe from "../models/recipe.model";
 import User from "../models/user.model";
 import { connectToDB } from "../mongoose";
-import fs from "fs/promises";
-import mongoose from "mongoose";
-import { currentUser } from "@clerk/nextjs";
-import { toast } from "@/components/ui/use-toast";
 
 export async function fetchRecipes() {
   try {
     connectToDB();
 
-    const recipes = await Recipe.find().populate("author community");
+    const recipes = await Recipe.find().populate("author");
     return { recipes };
   } catch (error: any) {
     throw new Error(`Failed to fetch recipes: ${error.message}`);

@@ -5,6 +5,17 @@ import { Button } from "../ui/button";
 import Image from "next/image";
 import { redirect, useRouter } from "next/navigation";
 import { toast } from "../ui/use-toast";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "../ui/alert-dialog";
 
 function DeleteButton({ recipeId }: { recipeId: string }) {
   const router = useRouter();
@@ -28,19 +39,39 @@ function DeleteButton({ recipeId }: { recipeId: string }) {
   };
 
   return (
-    <Button
-      className="bg-red-800 hover:bg-red-600 cursor-pointer"
-      title="delete"
-      onClick={handleDelete}
-    >
-      <Image
-        src="/assets/icons/delete.svg"
-        alt="delete recipe"
-        height={20}
-        width={20}
-        className="invert"
-      />
-    </Button>
+    <>
+      <AlertDialog>
+        <AlertDialogTrigger>
+          <Button
+            className="bg-red-800 hover:bg-red-600 cursor-pointer"
+            title="delete"
+          >
+            <Image
+              src="/assets/icons/delete.svg"
+              alt="delete recipe"
+              height={20}
+              width={20}
+              className="invert"
+            />
+          </Button>
+        </AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanetly delete your
+              recipe!
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDelete} className="bg-red-700">
+              Continue
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   );
 }
 
