@@ -20,7 +20,7 @@ async function EditProfile({ params }: Props) {
   console.log(user.id, " === ", userInfo.id);
 
   if (user.id !== userInfo.id) {
-    console.log("You are not the same user");
+    console.log("Permission denied");
 
     return redirect("/");
   }

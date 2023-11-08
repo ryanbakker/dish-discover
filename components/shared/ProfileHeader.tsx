@@ -5,6 +5,7 @@ import { Button } from "../ui/button";
 import Link from "next/link";
 import { useToast } from "../ui/use-toast";
 import { usePathname } from "next/navigation";
+import { currentUser } from "@clerk/nextjs";
 
 interface Props {
   accountId: string;
@@ -13,11 +14,24 @@ interface Props {
   username: string;
   imgUrl: string;
   bio: string;
+  currentUser: string;
 }
 
-function ProfileHeader({ accountId, _id, name, username, imgUrl, bio }: Props) {
+function ProfileHeader({
+  accountId,
+  _id,
+  name,
+  username,
+  imgUrl,
+  bio,
+  currentUser,
+}: Props) {
   const { toast } = useToast();
   const pathname = usePathname();
+
+  console.log(currentUser, "===", accountId);
+
+  const isNotAdmin = currentUser !== accountId;
 
   const handleShareClick = () => {
     // Generate the recipe URL from current page
@@ -52,10 +66,11 @@ function ProfileHeader({ accountId, _id, name, username, imgUrl, bio }: Props) {
           <div>
             <h2 className="text-3xl font-lora text-slate-800">{name}</h2>
             <h5 className="text-slate-500">@{username}</h5>
+            <p className="mt-2 font-light text-slate-800 max-w-xl">{bio}</p>
           </div>
-          <div className="ml-auto flex gap-2">
+          <div className="ml-auto flex flex-col gap-2">
             <Button
-              className="bg-slate-800 cursor-pointer hover:bg-slate-600"
+              className="bg-slate-800 cursor-pointer hover:bg-slate-600 flex gap-2 text-sm"
               title="share"
               onClick={handleShareClick}
             >
@@ -66,11 +81,13 @@ function ProfileHeader({ accountId, _id, name, username, imgUrl, bio }: Props) {
                 width={20}
                 className="invert"
               />
+              Share
             </Button>
-            <div className="flex gap-2">
+
+            <div className={`flex gap-2 ${isNotAdmin && "hidden"}`}>
               <Link
                 href={`/profile/${_id}/edit`}
-                className="bg-slate-800 cursor-pointer hover:bg-slate-600 flex justify-center items-center rounded-md px-4"
+                className="bg-slate-800 cursor-pointer hover:bg-slate-600 flex justify-center items-center rounded-md w-full gap-2 py-2 text-white text-sm font-medium"
               >
                 <Image
                   src="/assets/icons/edit.svg"
@@ -78,12 +95,12 @@ function ProfileHeader({ accountId, _id, name, username, imgUrl, bio }: Props) {
                   height={20}
                   width={20}
                   className="invert"
-                />
+                />{" "}
+                Edit
               </Link>
             </div>
           </div>
         </div>
-        <p className="mt-2 font-light text-slate-800 max-w-xl">{bio}</p>
       </div>
     </div>
   );

@@ -11,26 +11,12 @@ import User from "../models/user.model";
 // Fetch User with Id
 export async function fetchUser(userId: string) {
   try {
+    connectToDB();
+
     const user = await User.findById(userId, "id name username image bio");
     return user;
-  } catch (error) {
-    console.error("Error fetching user: ", error);
-    return null;
-  }
-}
-
-export async function fetchUsers() {
-  connectToDB();
-
-  try {
-    const users = await User.find({}, "id name username image");
-
-    console.log(users);
-
-    return { users };
-  } catch (error) {
-    console.error("Error fetching users: ", error);
-    return { users: [] };
+  } catch (error: any) {
+    throw new Error(`Failed to fetch user: ${error.message}`);
   }
 }
 
@@ -41,37 +27,6 @@ interface Params {
   bio: string;
   image: string;
   path: string;
-}
-
-export async function fetchUserRecipes(userId: string): Promise<RecipeType[]> {
-  try {
-    const recipes = await Recipe.find({ author: userId })
-      .populate({
-        path: "community",
-        model: "Community",
-        select: "name id image _id",
-      })
-      .lean(); // Use the lean() method to convert results to plain JavaScript objects
-
-    return recipes as RecipeType[];
-  } catch (error) {
-    console.error("Error fetching user recipes:", error);
-    throw error;
-  }
-}
-
-export async function fetchUserById(
-  userId: string
-): Promise<typeof User | null> {
-  connectToDB();
-
-  try {
-    const user = await User.findById(userId);
-    return user;
-  } catch (error) {
-    console.error(error);
-    return null;
-  }
 }
 
 export async function updateUser({
@@ -102,5 +57,51 @@ export async function updateUser({
     }
   } catch (error: any) {
     throw new Error(`Failed to create/update user: ${error.message}`);
+  }
+}
+
+export async function fetchUsers() {
+  connectToDB();
+
+  try {
+    const users = await User.find({}, "id name username image");
+
+    console.log(users);
+
+    return { users };
+  } catch (error) {
+    console.error("Error fetching users: ", error);
+    return { users: [] };
+  }
+}
+
+export async function fetchUserRecipes(userId: string): Promise<RecipeType[]> {
+  try {
+    const recipes = await Recipe.find({ author: userId })
+      .populate({
+        path: "community",
+        model: "Community",
+        select: "name id image _id",
+      })
+      .lean(); // Use the lean() method to convert results to plain JavaScript objects
+
+    return recipes as RecipeType[];
+  } catch (error) {
+    console.error("Error fetching user recipes:", error);
+    throw error;
+  }
+}
+
+export async function fetchUserById(
+  userId: string
+): Promise<typeof User | null> {
+  connectToDB();
+
+  try {
+    const user = await User.findById(userId);
+    return user;
+  } catch (error) {
+    console.error(error);
+    return null;
   }
 }

@@ -25,5 +25,5 @@ const recipeSchema = new mongoose.Schema<RecipeType>({
 const Recipe =
   mongoose.models.Recipe || mongoose.model<RecipeType>("Recipe", recipeSchema);
 
-export type { RecipeType }; // Use 'export type' for TypeScript strictness
+export type { RecipeType };
 export default Recipe;

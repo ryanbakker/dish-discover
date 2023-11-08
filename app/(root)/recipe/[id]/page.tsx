@@ -18,7 +18,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
   const isAuthor = user.id === recipe.author.id;
 
   return (
-    <article className="pb-12">
+    <article className="pb-12 w-full">
       <div className="aspect=4/3 overflow-hidden w-full h-[25rem] flex items-center shadow-xl">
         <Image
           src={recipe.image}
@@ -52,7 +52,8 @@ const Page = async ({ params }: { params: { id: string } }) => {
             <div className="flex flex-col gap-0">
               <h3 className="m-0 p-0 text-slate-600">{recipe.author.name}</h3>
               <p className="text-xs text-slate-400">
-                Published – {multiFormatDateString(recipe.createdAt)}
+                @{recipe.author.username}&nbsp;•&nbsp;
+                {multiFormatDateString(recipe.createdAt)}
               </p>
             </div>
           </Link>
@@ -72,8 +73,9 @@ const Page = async ({ params }: { params: { id: string } }) => {
                   className="invert"
                 />
               </Button>
-              <Button
-                className="bg-slate-800 cursor-pointer hover:bg-slate-600"
+              <Link
+                href={`/recipe/${recipe._id}/edit`}
+                className="bg-slate-800 cursor-pointer hover:bg-slate-600 flex items-center justify-center px-4 rounded-md"
                 title="edit"
               >
                 <Image
@@ -83,7 +85,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
                   width={20}
                   className="invert"
                 />
-              </Button>
+              </Link>
 
               {isAuthor && (
                 <>

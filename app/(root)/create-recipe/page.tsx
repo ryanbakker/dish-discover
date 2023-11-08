@@ -9,8 +9,6 @@ async function page() {
 
   const userInfo = await fetchUser(user.id);
 
-  if (!userInfo?.onboarded) redirect("/onboarding");
-
   return (
     <>
       <h1 className="page-heading">Create Recipe</h1>
