@@ -176,7 +176,7 @@ function PostRecipe({ userId, image }: Props) {
                     {imagePreview ? (
                       <Image
                         src={imagePreview}
-                        alt="profile photo"
+                        alt="Recipe"
                         width={280}
                         height={280}
                         priority
@@ -185,7 +185,7 @@ function PostRecipe({ userId, image }: Props) {
                       <div className="bg-gray-100 p-20 flex flex-col items-center justify-center rounded-xl">
                         <Image
                           src="/assets/icons/PhotoUpload.svg"
-                          alt="profile photo"
+                          alt="upload placeholder"
                           width={95}
                           height={95}
                           className="opacity-50"

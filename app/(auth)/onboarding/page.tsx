@@ -1,4 +1,4 @@
-import AccountProfile from "@/components/forms/AccountProfile";
+import AccountProfile from "@/components/forms/AccountProfile.tsx 18-04-53-253";
 import { fetchUser } from "@/lib/actions/user.actions";
 import { currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";

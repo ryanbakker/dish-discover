@@ -3,29 +3,23 @@ import DeleteButton from "@/components/shared/DeleteButton";
 import SuggestedRecipes from "@/components/shared/SuggestedRecipes";
 import { Button } from "@/components/ui/button";
 import { fetchRecipeById } from "@/lib/actions/recipe.actions";
-import { fetchUser } from "@/lib/actions/user.actions";
 import { multiFormatDateString } from "@/lib/utils";
 import { currentUser } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 
 const Page = async ({ params }: { params: { id: string } }) => {
   if (!params.id) return null;
+  const recipe = await fetchRecipeById(params.id);
 
   const user = await currentUser();
   if (!user) return null;
-
-  const userInfo = await fetchUser(user.id);
-  if (!userInfo?.onboarded) redirect("/onboarding");
-
-  const recipe = await fetchRecipeById(params.id);
 
   const isAuthor = user.id === recipe.author.id;
 
   return (
     <article className="pb-12">
-      <div className="apsect=4/3 overflow-hidden w-full h-[25rem] flex items-center shadow-xl">
+      <div className="aspect=4/3 overflow-hidden w-full h-[25rem] flex items-center shadow-xl">
         <Image
           src={recipe.image}
           alt={recipe.title}
@@ -64,19 +58,20 @@ const Page = async ({ params }: { params: { id: string } }) => {
           </Link>
 
           <div className="ml-auto flex flex-row gap-2">
-            <Button
-              className="bg-slate-800 cursor-pointer hover:bg-slate-600"
-              title="share"
-            >
-              <Image
-                src="/assets/icons/share.svg"
-                alt="edit recipe"
-                height={20}
-                width={20}
-                className="invert"
-              />
-            </Button>
             <div className="flex gap-2">
+              <Button
+                className="bg-slate-800 cursor-pointer hover:bg-slate-600"
+                title="share"
+                type="button"
+              >
+                <Image
+                  src="/assets/icons/share.svg"
+                  alt="edit recipe"
+                  height={20}
+                  width={20}
+                  className="invert"
+                />
+              </Button>
               <Button
                 className="bg-slate-800 cursor-pointer hover:bg-slate-600"
                 title="edit"
@@ -92,7 +87,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
 
               {isAuthor && (
                 <>
-                  <DeleteButton recipeId={recipe._id} />
+                  <DeleteButton recipeId={recipe._id.someProperty} />
                 </>
               )}
             </div>

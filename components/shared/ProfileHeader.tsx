@@ -2,20 +2,34 @@
 
 import Image from "next/image";
 import { Button } from "../ui/button";
-import { currentUser } from "@clerk/nextjs";
-import { redirect, useRouter } from "next/navigation";
-import ProfileButtons from "./ProfileButtons";
+import Link from "next/link";
+import { useToast } from "../ui/use-toast";
+import { usePathname } from "next/navigation";
 
 interface Props {
   accountId: string;
+  _id: string;
   name: string;
   username: string;
   imgUrl: string;
   bio: string;
 }
 
-function ProfileHeader({ accountId, name, username, imgUrl, bio }: Props) {
-  const router = useRouter();
+function ProfileHeader({ accountId, _id, name, username, imgUrl, bio }: Props) {
+  const { toast } = useToast();
+  const pathname = usePathname();
+
+  const handleShareClick = () => {
+    // Generate the recipe URL from current page
+    const profileUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${pathname}`;
+
+    // Copy the URL to clipboard
+    navigator.clipboard.writeText(profileUrl);
+
+    toast({
+      title: "Profile link copied to clipboard!",
+    });
+  };
 
   return (
     <div className="shadow-lg w-full p-10 flex gap-4">
@@ -39,7 +53,35 @@ function ProfileHeader({ accountId, name, username, imgUrl, bio }: Props) {
             <h2 className="text-3xl font-lora text-slate-800">{name}</h2>
             <h5 className="text-slate-500">@{username}</h5>
           </div>
-          <ProfileButtons />
+          <div className="ml-auto flex gap-2">
+            <Button
+              className="bg-slate-800 cursor-pointer hover:bg-slate-600"
+              title="share"
+              onClick={handleShareClick}
+            >
+              <Image
+                src="/assets/icons/share.svg"
+                alt="edit recipe"
+                height={20}
+                width={20}
+                className="invert"
+              />
+            </Button>
+            <div className="flex gap-2">
+              <Link
+                href={`/profile/${_id}/edit`}
+                className="bg-slate-800 cursor-pointer hover:bg-slate-600 flex justify-center items-center rounded-md px-4"
+              >
+                <Image
+                  src="/assets/icons/edit.svg"
+                  alt="edit recipe"
+                  height={20}
+                  width={20}
+                  className="invert"
+                />
+              </Link>
+            </div>
+          </div>
         </div>
         <p className="mt-2 font-light text-slate-800 max-w-xl">{bio}</p>
       </div>
@@ -48,11 +90,3 @@ function ProfileHeader({ accountId, name, username, imgUrl, bio }: Props) {
 }
 
 export default ProfileHeader;
-
-// Name
-// Username
-// Profile Photo
-// Bio
-// Edit Profile
-// Delete Profile
-// Share Profile

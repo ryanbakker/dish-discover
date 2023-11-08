@@ -10,18 +10,18 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { updateUser } from "@/lib/actions/user.actions";
-import { useUploadThing } from "@/lib/uploadthing";
-import { isBase64Image } from "@/lib/utils";
-import { UserValidation } from "@/lib/validations/user";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { usePathname, useRouter } from "next/navigation";
-import { ChangeEvent, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Textarea } from "../ui/textarea";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { UserValidation } from "@/lib/validations/user";
+import * as z from "zod";
 import { Button } from "../ui/button";
 import Image from "next/image";
-import * as z from "zod";
+import { ChangeEvent, useState } from "react";
+import { Textarea } from "../ui/textarea";
+import { isBase64Image } from "@/lib/utils";
+import { useUploadThing } from "@/lib/uploadthing";
+import { updateUser } from "@/lib/actions/user.actions";
+import { usePathname, useRouter } from "next/navigation";
 
 interface Props {
   user: {
@@ -98,7 +98,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
       path: pathname,
     });
 
-    if (pathname === "profile/edit") {
+    if (pathname === "/profile/edit") {
       router.back();
     } else {
       router.push("/");
@@ -106,7 +106,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
   };
 
   return (
-    <>
+    <div>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -224,7 +224,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
           </Button>
         </form>
       </Form>
-    </>
+    </div>
   );
 };
 
