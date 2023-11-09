@@ -67,7 +67,6 @@ function PostRecipe({ userId, image }: Props) {
       fileReader.onload = async (event) => {
         const imageDataUrl = event.target?.result?.toString() || "";
 
-        // Set the URL instead of the file object
         fieldChange(imageDataUrl);
         setImagePreview(imageDataUrl);
       };
