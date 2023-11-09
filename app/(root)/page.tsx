@@ -34,7 +34,6 @@ export default async function Home() {
                   method={recipe.method}
                   notes={recipe.notes}
                   author={recipe.author}
-                  community={recipe.community}
                   createdAt={recipe.createdAt}
                 />
               </Link>

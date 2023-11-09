@@ -1,5 +1,6 @@
 import { multiFormatDateString } from "@/lib/utils";
 import Image from "next/image";
+import Link from "next/link";
 
 interface Props {
   id: string | "";
@@ -16,11 +17,6 @@ interface Props {
     id: string;
     username: string;
   };
-  community: {
-    id: string;
-    name: string;
-    image: string | "";
-  } | null;
 }
 
 const RecipeCard = ({
@@ -32,7 +28,6 @@ const RecipeCard = ({
   method,
   notes,
   createdAt,
-  community,
   author,
 }: Props) => {
   return (
@@ -47,7 +42,7 @@ const RecipeCard = ({
         />
       </div>
 
-      <div className="p-5 bg-accent-light mt-auto flex-1 flex flex-col justify-between">
+      <div className="p-5 bg-gray-50 mt-auto flex-1 flex flex-col justify-between">
         <h3 className="text-xl text-slate-800 font-lora">{title}</h3>
 
         <div className="flex gap-2 mt-4 items-center">

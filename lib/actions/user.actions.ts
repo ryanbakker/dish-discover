@@ -3,7 +3,6 @@
 import { FilterQuery, SortOrder } from "mongoose";
 import { revalidatePath } from "next/cache";
 
-import Community from "../models/community.model";
 import Recipe, { RecipeType } from "../models/recipe.model";
 import { connectToDB } from "../mongoose";
 import User from "../models/user.model";
@@ -13,10 +12,7 @@ export async function fetchUser(userId: string) {
   try {
     connectToDB();
 
-    return await User.findOne({ id: userId }).populate({
-      path: "communities",
-      model: Community,
-    });
+    return await User.findOne({ id: userId });
   } catch (error: any) {
     throw new Error(`Failed to fetch user: ${error.message}`);
   }
@@ -26,10 +22,7 @@ export async function fetchUserByParams(userId: string) {
   try {
     connectToDB();
 
-    return await User.findOne({ _id: userId }).populate({
-      path: "communities",
-      model: Community,
-    });
+    return await User.findOne({ _id: userId });
   } catch (error: any) {
     throw new Error(`Failed to fetch user: ${error.message}`);
   }
@@ -94,11 +87,10 @@ export async function fetchUserRecipes(userId: string): Promise<RecipeType[]> {
   try {
     const recipes = await Recipe.find({ author: userId })
       .populate({
-        path: "community",
-        model: "Community",
-        select: "name id image _id",
+        path: "recipes",
+        model: Recipe,
       })
-      .lean(); // Use the lean() method to convert results to plain JavaScript objects
+      .lean();
 
     return recipes as RecipeType[];
   } catch (error) {

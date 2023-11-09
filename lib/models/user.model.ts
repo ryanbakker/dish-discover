@@ -16,12 +16,6 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  communities: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Community",
-    },
-  ],
 });
 
 // Explicitly tell Mongoose to use the 'id' field as the primary key

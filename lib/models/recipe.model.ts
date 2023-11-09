@@ -6,7 +6,6 @@ interface RecipeType extends Document {
   ingredients: string;
   method: string;
   notes: string;
-  community?: Schema.Types.ObjectId | null;
   createdAt: Date;
   author: Schema.Types.ObjectId;
 }
@@ -17,7 +16,6 @@ const recipeSchema = new mongoose.Schema<RecipeType>({
   ingredients: { type: String, required: true },
   method: { type: String, required: true },
   notes: { type: String, required: true },
-  community: { type: mongoose.Schema.Types.ObjectId, ref: "Community" },
   createdAt: { type: Date, default: Date.now },
   author: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
 });

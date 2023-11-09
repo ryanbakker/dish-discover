@@ -19,11 +19,6 @@ export const sidebarLinks = [
     route: "/saved",
     label: "Saved",
   },
-  {
-    imgURL: "/assets/icons/UsersGroup.svg",
-    route: "/communities",
-    label: "Comminities",
-  },
 ];
 
 export const bottombarLinks = [
@@ -46,10 +41,5 @@ export const bottombarLinks = [
     imgURL: "/assets/icons/Bookmark.svg",
     route: "/saved",
     label: "Saved",
-  },
-  {
-    imgURL: "/assets/icons/UsersGroup.svg",
-    route: "/communities",
-    label: "Comminities",
   },
 ];

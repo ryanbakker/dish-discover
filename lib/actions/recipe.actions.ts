@@ -1,7 +1,6 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import Community from "../models/community.model";
 import Recipe from "../models/recipe.model";
 import User from "../models/user.model";
 import { connectToDB } from "../mongoose";
@@ -10,7 +9,11 @@ export async function fetchRecipes() {
   try {
     connectToDB();
 
-    const recipes = await Recipe.find().populate("author");
+    const recipes = await Recipe.find().populate({
+      path: "author",
+      model: User,
+    });
+
     return { recipes };
   } catch (error: any) {
     throw new Error(`Failed to fetch recipes: ${error.message}`);
@@ -24,7 +27,6 @@ interface Params {
   method: string;
   author: string;
   notes: string;
-  communityId: string | null;
   path: string;
 }
 
@@ -32,7 +34,6 @@ export async function createRecipe({
   title,
   image,
   ingredients,
-  communityId,
   method,
   notes,
   author,
@@ -41,11 +42,6 @@ export async function createRecipe({
   try {
     connectToDB();
 
-    const communityIdObject = await Community.findOne(
-      { id: communityId },
-      { _id: 1 }
-    );
-
     const createdRecipe = await Recipe.create({
       title,
       author,
@@ -53,19 +49,12 @@ export async function createRecipe({
       ingredients,
       method,
       notes,
-      community: communityIdObject,
     });
 
     // Update user model
     await User.findByIdAndUpdate(author, {
       $push: { recipes: createdRecipe._id },
     });
-
-    if (communityIdObject) {
-      await Community.findByIdAndUpdate(communityIdObject, {
-        $push: { recipes: createdRecipe._id },
-      });
-    }
 
     revalidatePath(path);
   } catch (error: any) {
@@ -77,7 +66,7 @@ export async function deleteRecipe(recipeId: string) {
   connectToDB();
 
   try {
-    const recipe = Recipe.findById(recipeId);
+    const recipe = Recipe.findById(recipeId).populate("author");
 
     console.log("Recipe found = ", recipe);
 

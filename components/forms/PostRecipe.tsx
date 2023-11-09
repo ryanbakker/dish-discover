@@ -1,6 +1,5 @@
 "use client";
 
-import { useOrganization } from "@clerk/nextjs";
 import { usePathname, useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -20,7 +19,7 @@ import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import Image from "next/image";
 import { ChangeEvent, useState } from "react";
-import { toast, useToast } from "../ui/use-toast";
+import { useToast } from "../ui/use-toast";
 import Loader from "../shared/Loader";
 
 interface Props {
@@ -31,7 +30,6 @@ interface Props {
 function PostRecipe({ userId, image }: Props) {
   const router = useRouter();
   const pathname = usePathname();
-  const { organization } = useOrganization();
   const { toast } = useToast();
   const [files, setFiles] = useState<File[]>([]);
   const [isPosting, setIsPosting] = useState(false);
@@ -82,6 +80,8 @@ function PostRecipe({ userId, image }: Props) {
     try {
       setIsPosting(true);
 
+      console.log("Values => ", values);
+
       await createRecipe({
         title: values.title,
         image: values.image,
@@ -89,7 +89,6 @@ function PostRecipe({ userId, image }: Props) {
         method: values.method,
         notes: values.notes,
         author: userId,
-        communityId: organization ? organization.id : null,
         path: pathname,
       });
 
@@ -103,7 +102,8 @@ function PostRecipe({ userId, image }: Props) {
 
       form.reset();
       setIsPosting(false);
-      router.push("/");
+
+      return router.back();
     } catch (error: any) {
       setIsPosting(false);
       toast({
