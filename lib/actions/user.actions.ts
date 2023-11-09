@@ -13,8 +13,23 @@ export async function fetchUser(userId: string) {
   try {
     connectToDB();
 
-    const user = await User.findById(userId, "id name username image bio");
-    return user;
+    return await User.findOne({ id: userId }).populate({
+      path: "communities",
+      model: Community,
+    });
+  } catch (error: any) {
+    throw new Error(`Failed to fetch user: ${error.message}`);
+  }
+}
+
+export async function fetchUserByParams(userId: string) {
+  try {
+    connectToDB();
+
+    return await User.findOne({ _id: userId }).populate({
+      path: "communities",
+      model: Community,
+    });
   } catch (error: any) {
     throw new Error(`Failed to fetch user: ${error.message}`);
   }

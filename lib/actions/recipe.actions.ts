@@ -22,8 +22,8 @@ interface Params {
   image: string;
   ingredients: string;
   method: string;
-  notes: string;
   author: string;
+  notes: string;
   communityId: string | null;
   path: string;
 }
@@ -32,10 +32,10 @@ export async function createRecipe({
   title,
   image,
   ingredients,
+  communityId,
   method,
   notes,
   author,
-  communityId,
   path,
 }: Params) {
   try {
@@ -79,7 +79,11 @@ export async function deleteRecipe(recipeId: string) {
   try {
     const recipe = Recipe.findById(recipeId);
 
+    console.log("Recipe found = ", recipe);
+
     await Recipe.deleteOne(recipe);
+
+    console.log("Recipe Deleted");
 
     return;
   } catch (error: any) {
@@ -105,28 +109,3 @@ export async function fetchRecipeById(recipeId: string) {
     throw new Error("Unable to fetch recipe");
   }
 }
-
-// export async function updateRecipe({
-//   _id,
-//   title,
-//   image,
-//   ingredients,
-//   method,
-//   notes,
-//   path,
-// }: Params): Promise<void> {
-//   try {
-//     connectToDB();
-
-//     // Assuming you have a Recipe model with a static updateRecipe method
-//     await Recipe.findOneAndUpdate(
-//       { _id },
-//       { title, image, ingredients, method, notes },
-//       { upsert: true }
-//     );
-
-//     // Add any additional logic here based on your requirements
-//   } catch (error: any) {
-//     throw new Error(`Failed to create/update recipe: ${error.message}`);
-//   }
-// }

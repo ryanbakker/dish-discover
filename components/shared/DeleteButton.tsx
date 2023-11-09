@@ -20,6 +20,8 @@ import {
 function DeleteButton({ recipeId }: { recipeId: string }) {
   const router = useRouter();
 
+  console.log("DeleteButton - recipeId: ", recipeId);
+
   const handleDelete = async () => {
     try {
       await deleteRecipe(recipeId);

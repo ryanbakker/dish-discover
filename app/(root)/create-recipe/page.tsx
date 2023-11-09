@@ -9,6 +9,8 @@ async function page() {
 
   const userInfo = await fetchUser(user.id);
 
+  console.log("UserInfo", userInfo);
+
   return (
     <>
       <h1 className="page-heading">Create Recipe</h1>

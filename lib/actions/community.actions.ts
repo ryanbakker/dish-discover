@@ -273,7 +273,6 @@ export async function deleteCommunity(communityId: string) {
       throw new Error("Community not found");
     }
 
-    // Delete all threads associated with the community
     await Recipe.deleteMany({ community: communityId });
 
     // Find all users who are part of the community

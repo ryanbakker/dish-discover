@@ -1,12 +1,15 @@
 import ProfileRecipeCard from "@/components/cards/ProfileRecipeCard";
 import ProfileHeader from "@/components/shared/ProfileHeader";
-import { fetchUser, fetchUserRecipes } from "@/lib/actions/user.actions";
+import {
+  fetchUserByParams,
+  fetchUserRecipes,
+} from "@/lib/actions/user.actions";
 import { currentUser } from "@clerk/nextjs";
 import Link from "next/link";
 
 async function page({ params }: { params: { id: string } }) {
   const userId = params.id;
-  const userInfo = await fetchUser(params.id);
+  const userInfo = await fetchUserByParams(params.id);
   const userRecipes = await fetchUserRecipes(userId);
   const user = await currentUser();
   // const currentUserId
